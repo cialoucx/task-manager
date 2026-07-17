@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* --- Theme Declarations --- */
+:root {
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'Inter', sans-serif;
+
+  /* Priority Colors */
+  --priority-low: #34d399;    /* 🟢 Emerald */
+  --priority-medium: #f0a94e; /* 🟡 Amber */
+  --priority-high: #f2545b;   /* 🔴 Red */
+}
+
+/* 🌙 Dark Theme (Premium Obsidian) */
+.theme-dark {
+  --bg: #0b0c14;
+  --bg-elevated: #12131e;
+  --card-bg: #161826;
+  --card-bg-hover: #1a1c2c;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text: #f2f2f5;
+  --text-muted: #9b9bab;
+  --text-dimmed: #67677a;
+  --text-inverse: #0b0c14;
+  --accent: #7c6ff0;
+  --accent-hover: #6a5de0;
+  --accent-light: rgba(124, 111, 240, 0.14);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+  --glass: rgba(22, 24, 38, 0.8);
+}
+
+/* ☀️ Light Theme (Premium Slate) */
+.theme-light {
+  --bg: #f8fafc;
+  --bg-elevated: #f1f5f9;
+  --card-bg: #ffffff;
+  --card-bg-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --text-dimmed: #94a3b8;
+  --text-inverse: #ffffff;
+  --accent: #4f46e5;
+  --accent-hover: #3b33b3;
+  --accent-light: rgba(79, 70, 229, 0.08);
+  --shadow: 0 12px 30px rgba(15, 23, 42, 0.06), inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+  --glass: rgba(255, 255, 255, 0.85);
+}
+
+/* 📜 Retro Paper Theme (Warm Editorial) */
+.theme-retro {
+  --bg: #f5eedc;
+  --bg-elevated: #fbeedc;
+  --card-bg: #fdfbf7;
+  --card-bg-hover: #fbf6e9;
+  --border: #c4b5a2;
+  --border-strong: #a89a87;
+  --text: #292524;
+  --text-muted: #78716c;
+  --text-dimmed: #a8a29e;
+  --text-inverse: #f5eedc;
+  --accent: #d97706;
+  --accent-hover: #b45309;
+  --accent-light: rgba(217, 119, 6, 0.1);
+  --shadow: 4px 4px 0px rgba(41, 37, 36, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.7);
+  --glass: rgba(253, 251, 247, 0.9);
+}
+
+/* 📟 Terminal Theme */
+.theme-terminal {
+  --bg: #050505;
+  --bg-elevated: #0a0a0a;
+  --card-bg: #0c0c0c;
+  --card-bg-hover: #161616;
+  --border: #00ff66;
+  --border-strong: rgba(0, 255, 102, 0.3);
+  --text: #33ff77;
+  --text-muted: #009933;
+  --text-dimmed: #006622;
+  --text-inverse: #000000;
+  --accent: #00ff66;
+  --accent-hover: #00cc52;
+  --accent-light: rgba(0, 255, 102, 0.12);
+  --shadow: 0 0 15px rgba(0, 255, 102, 0.2), inset 0 1px 0 0 rgba(0, 255, 102, 0.05);
+  --glass: rgba(5, 5, 5, 0.85);
+}
+
+/* --- Global Reset & Shell --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(124, 111, 240, 0.06), transparent),
+    radial-gradient(ellipse 700px 400px at 100% 0%, rgba(52, 211, 153, 0.03), transparent);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.5;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* --- Utility Classes --- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.text-mono {
+  font-family: var(--font-sans);
+}
+
+/* Skeletons */
+.skeleton {
+  background: linear-gradient(90deg, var(--border) 25%, var(--card-bg-hover) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: loading-skeleton 1.5s infinite;
+  border-radius: 6px;
+}
+
+@keyframes loading-skeleton {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Text match highlight */
+.search-highlight {
+  background-color: rgba(245, 158, 11, 0.25);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* ARIA and Keyboard Navigation focus outlines */
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--border-focus);
+  outline-offset: 2px;
+}
