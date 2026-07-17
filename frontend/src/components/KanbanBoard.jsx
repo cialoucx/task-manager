@@ -36,6 +36,21 @@ export function highlightText(text, search) {
   );
 }
 
+function formatNextTaskDue(dueDateStr) {
+  if (!dueDateStr) return '';
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const due = new Date(dueDateStr);
+  due.setHours(0, 0, 0, 0);
+  const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+  if (diffDays < 0) return 'overdue';
+  if (diffDays === 0) return 'due today';
+  if (diffDays === 1) return 'due tomorrow';
+  
+  const options = { month: 'short', day: 'numeric' };
+  return `due ${due.toLocaleDateString(undefined, options)}`;
+}
+
 export default function KanbanBoard({ 
   tasks, 
   search, 
@@ -50,19 +65,19 @@ export default function KanbanBoard({
     { 
       key: 'high', 
       label: 'High priority', 
-      emptyMsg: 'No high priority work.\nYou\'re staying focused.',
+      emptyMsg: 'Nothing filed at high priority. Docket\'s clear.',
       dotClass: 'high' 
     },
     { 
       key: 'medium', 
       label: 'Medium priority', 
-      emptyMsg: 'No medium priority work.\nYou\'re staying focused.',
+      emptyMsg: 'Nothing filed at medium priority. Docket\'s clear.',
       dotClass: 'med' 
     },
     { 
       key: 'low', 
       label: 'Low priority', 
-      emptyMsg: 'No low priority work.\nYou\'re staying focused.',
+      emptyMsg: 'Nothing filed at low priority. Docket\'s clear.',
       dotClass: 'low' 
     },
   ];
@@ -98,23 +113,22 @@ export default function KanbanBoard({
         return (
           <div
             key={col.key}
-            className="kanban-column"
+            className={`col ${col.key}`}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, col.key)}
             role="region"
             aria-label={`${col.label} lane`}
-            style={{ display: 'flex', flexDirection: 'column' }}
           >
             <div className="col-head">
-              <span className={`dot ${col.dotClass}`}></span>
-              {col.label}
-              <span className="col-count">({colTasks.length})</span>
+              <span className="label">{col.label}</span>
+              <span className="count">{String(colTasks.length).padStart(3, '0')}</span>
             </div>
 
             <div className="task-cards-list" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
               <AnimatePresence>
                 {colTasks.map((task) => {
-                  const dueDateLabel = formatDueDate(task.dueDate);
+                  const dueLabel = formatNextTaskDue(task.dueDate);
+                  const isOverdueOrToday = dueLabel === 'overdue' || dueLabel === 'due today';
                   
                   return (
                     <motion.div
@@ -124,48 +138,41 @@ export default function KanbanBoard({
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className={`task-card priority-${task.priority} ${task.completed ? 'done' : ''}`}
+                      className={`row task-card priority-${task.priority} ${task.completed ? 'done' : ''}`}
                       draggable
                       onDragStart={(e) => handleDragStart(e, task.id)}
                       onDragEnd={handleDragEnd}
                       onClick={() => onCardClick(task)}
                     >
-                      <div className="task-top">
-                        <div 
-                          className={`task-check ${task.completed ? 'checked' : ''}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onToggle(task.id);
-                          }}
-                          aria-label={task.completed ? 'Mark incomplete' : 'Mark complete'}
-                        >
-                          {task.completed && (
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#0b0c14" strokeWidth="3">
-                              <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                          )}
-                        </div>
-                        
-                        <div className="task-title">
-                          {highlightText(task.title, search)}
-                        </div>
+                      <div className="row-num">{String(task.id).padStart(3, '0')}</div>
+                      
+                      <div 
+                        className={`row-check task-check ${task.completed ? 'checked' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onToggle(task.id);
+                        }}
+                        aria-label={task.completed ? 'Mark incomplete' : 'Mark complete'}
+                      >
+                        {task.completed && (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                        )}
                       </div>
 
-                      <div className="task-meta">
-                        {dueDateLabel && (
-                          <div className="task-due">
-                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <rect x="3" y="4" width="18" height="18" rx="2"/>
-                              <line x1="16" y1="2" x2="16" y2="6"/>
-                              <line x1="8" y1="2" x2="8" y2="6"/>
-                              <line x1="3" y1="10" x2="21" y2="10"/>
-                            </svg>
-                            {dueDateLabel}
-                          </div>
-                        )}
-
-                        <div className="task-updated">
-                          updated {formatTimeAgo(task.updatedAt)}
+                      <div className="row-body">
+                        <div className="row-title task-title">
+                          {highlightText(task.title, search)}
+                        </div>
+                        <div className="row-meta task-meta">
+                          {task.completed ? (
+                            <span>closed {new Date(task.updatedAt || Date.now()).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                          ) : (
+                            dueLabel && <span className={isOverdueOrToday ? 'due-soon' : ''}>{dueLabel}</span>
+                          )}
+                          <span>·</span>
+                          <span>updated {formatTimeAgo(task.updatedAt)}</span>
                         </div>
                       </div>
                     </motion.div>
@@ -174,16 +181,9 @@ export default function KanbanBoard({
               </AnimatePresence>
 
               {colTasks.length === 0 && (
-                <div className="empty-col" style={{ flexGrow: 1 }}>
-                  <div className="empty-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                  </div>
+                <div className="col-empty">
                   <p>
-                    {col.emptyMsg.split('\n')[0]}
-                    <br />
-                    {col.emptyMsg.split('\n')[1]}
+                    Nothing filed at {col.key} priority. <span className="mark">Docket's clear.</span>
                   </p>
                 </div>
               )}

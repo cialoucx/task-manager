@@ -50,36 +50,53 @@ export default function TodaysDocket({ tasks, onCardClick, onToggle }) {
 
   const greetingSubText = useMemo(() => {
     if (incompleteTasks.length === 0 && tasks.length > 0) {
-      return "Everything's complete. Nice work. Time to relax.";
+      return "Docket's clear.";
     }
     if (tasks.length === 0) {
-      return "Your daily brief is clear. Create a task below to begin.";
+      return "Your daily brief is clear. File a new entry below to begin.";
     }
-    return `You have ${incompleteTasks.length} task${incompleteTasks.length === 1 ? '' : 's'} left today.`;
+    return `${incompleteTasks.length} ${incompleteTasks.length === 1 ? 'entry' : 'entries'} still open on today's docket.`;
   }, [incompleteTasks.length, tasks.length]);
 
   return (
-    <div className="greeting-block">
-      <div className="eyebrow">TODAY'S BRIEF</div>
-      <h1>{timeGreeting}, {formattedUsername}.</h1>
-      <p className="greeting-sub">{greetingSubText}</p>
+    <div className="brief-left">
+      <div className="eyebrow">Today's brief</div>
+      <div className="greeting-block">
+        <h1>{timeGreeting}, {formattedUsername}.</h1>
+        <p className="greeting-sub">{greetingSubText}</p>
+      </div>
       
-      {nextTask && (
+      {nextTask ? (
         <div 
-          className="next-task"
+          className="status-line"
           onClick={() => onCardClick(nextTask)}
           role="button"
           tabIndex={0}
           onKeyDown={e => e.key === 'Enter' && onCardClick(nextTask)}
         >
-          <div 
-            className="check" 
-            onClick={e => { e.stopPropagation(); onToggle(nextTask.id); }}
-            aria-label="Toggle next task"
-          />
-          <div className="title">{nextTask.title}</div>
-          <div className="badge-due">{formatNextTaskDue(nextTask.dueDate)}</div>
-          <div className="arrow">→</div>
+          <div className="stamp">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div className="text">
+            <div className="title">{nextTask.title}</div>
+            <div className="sub">Filed {new Date(nextTask.createdAt || nextTask.updatedAt || Date.now()).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} — due {formatNextTaskDue(nextTask.dueDate).toLowerCase()}</div>
+          </div>
+        </div>
+      ) : (
+        <div className="status-line">
+          <div className="stamp clear">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div className="text">
+            <div className="title">All caught up for today</div>
+            <div className="sub">Nothing due — check back tomorrow, or get ahead on low priority tasks.</div>
+          </div>
         </div>
       )}
     </div>

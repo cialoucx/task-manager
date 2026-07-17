@@ -4,31 +4,35 @@
 :root {
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Space Grotesk', sans-serif;
-  --font-mono: 'Inter', sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
 
   /* Priority Colors */
-  --priority-low: #34d399;    /* 🟢 Emerald */
-  --priority-medium: #f0a94e; /* 🟡 Amber */
-  --priority-high: #f2545b;   /* 🔴 Red */
+  --priority-low: #4fb88a;
+  --priority-medium: #d9a441;
+  --priority-high: #e8735f;
 }
 
 /* 🌙 Dark Theme (Premium Obsidian) */
 .theme-dark {
-  --bg: #0b0c14;
-  --bg-elevated: #12131e;
-  --card-bg: #161826;
-  --card-bg-hover: #1a1c2c;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --text: #f2f2f5;
-  --text-muted: #9b9bab;
-  --text-dimmed: #67677a;
-  --text-inverse: #0b0c14;
-  --accent: #7c6ff0;
-  --accent-hover: #6a5de0;
-  --accent-light: rgba(124, 111, 240, 0.14);
+  --bg: #0c0c11;
+  --bg-elevated: #131319;
+  --card-bg: #17171f;
+  --card-bg-hover: #1c1c27;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: #f0f0f2;
+  --text-muted: #96969f;
+  --text-dimmed: #605f6b;
+  --text-inverse: #0c0c11;
+  --accent: #9b8cf2;
+  --accent-hover: #8574e8;
+  --accent-light: rgba(155, 140, 242, 0.12);
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
   --glass: rgba(22, 24, 38, 0.8);
+  --low: #4fb88a;
+  --low-dim: rgba(79, 184, 138, 0.13);
+  --ink: #c94f3f;
+  --ink-dim: rgba(201, 79, 63, 0.13);
 }
 
 /* ☀️ Light Theme (Premium Slate) */
@@ -36,7 +40,7 @@
   --bg: #f8fafc;
   --bg-elevated: #f1f5f9;
   --card-bg: #ffffff;
-  --card-bg-hover: #f1f5f9;
+  --card-bg-hover: #f8fafc;
   --border: #e2e8f0;
   --border-strong: #cbd5e1;
   --text: #0f172a;
@@ -48,6 +52,10 @@
   --accent-light: rgba(79, 70, 229, 0.08);
   --shadow: 0 12px 30px rgba(15, 23, 42, 0.06), inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
   --glass: rgba(255, 255, 255, 0.85);
+  --low: #10b981;
+  --low-dim: rgba(16, 185, 129, 0.12);
+  --ink: #b91c1c;
+  --ink-dim: rgba(185, 28, 28, 0.12);
 }
 
 /* 📜 Retro Paper Theme (Warm Editorial) */
@@ -67,6 +75,10 @@
   --accent-light: rgba(217, 119, 6, 0.1);
   --shadow: 4px 4px 0px rgba(41, 37, 36, 0.1), inset 0 1px 0 0 rgba(255, 255, 255, 0.7);
   --glass: rgba(253, 251, 247, 0.9);
+  --low: #15803d;
+  --low-dim: rgba(21, 128, 61, 0.12);
+  --ink: #991b1b;
+  --ink-dim: rgba(153, 27, 27, 0.12);
 }
 
 /* 📟 Terminal Theme */
@@ -86,6 +98,8 @@
   --accent-light: rgba(0, 255, 102, 0.12);
   --shadow: 0 0 15px rgba(0, 255, 102, 0.2), inset 0 1px 0 0 rgba(0, 255, 102, 0.05);
   --glass: rgba(5, 5, 5, 0.85);
+  --low: #00ff66;
+  --low-dim: rgba(0, 255, 102, 0.12);
 }
 
 /* --- Global Reset & Shell --- */

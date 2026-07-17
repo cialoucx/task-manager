@@ -32,12 +32,12 @@ export default function TaskList({ tasks, loading, error, onToggle, onEdit, onDe
         </h3>
         <p className="empty-state-subtitle">
           {search
-            ? `We couldn't find any tasks matching "${search}".`
-            : 'Create a new task.'}
+            ? `We couldn't find any entries matching "${search}".`
+            : 'File a new entry.'}
         </p>
         {!search && (
           <button onClick={onCreateClick} className="btn-primary" style={{ margin: '0 auto' }}>
-            Create Task
+            File new entry
           </button>
         )}
       </div>
@@ -45,7 +45,7 @@ export default function TaskList({ tasks, loading, error, onToggle, onEdit, onDe
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0px' }}>
       <AnimatePresence>
         {tasks.map((task) => (
           <TaskItem
